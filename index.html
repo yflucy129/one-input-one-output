@@ -5,25 +5,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1 INPUT 1 OUTPUT TEMPLATE</title>
     <style>
+        /* Apply a fun solid background */
+        body {
+            font-family: 'Comic Sans MS', 'Poppins', sans-serif;
+            background: #fcccc2; /* Flat muted coral */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-        /* STYLE FOr THE INPUT FIELD */
+        /* Style for the input field */
         #charInput {
-
+            font-size: 1.5rem;
+            padding: 10px;
+            border: 3px solid #C84C5F;
+            border-radius: 8px;
+            outline: none;
+            text-transform: uppercase;
+            text-align: center;
+            width: 60px;
+            transition: all 0.3s ease-in-out;
         }
 
-        /* STYLE FOR THE SUBMIT BUTTON */
+        #charInput:focus {
+            border-color: #FFC107;
+            box-shadow: 0px 0px 10px #FFC107;
+        }
+
+        /* Fun animated button */
         #submitButton {
-
+            font-size: 1.2rem;
+            font-family: 'Comic Sans MS', sans-serif;
+            padding: 12px 25px;
+            margin-top: 15px;
+            border: 2px solid #ffeded;
+            border-radius: 10px;
+            background: #6BA89D; /* Flat soft green */
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
         }
 
-        /* STYLE FOR THE IMAGE */
+        #submitButton:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 0px 12px rgba(255, 255, 255, 0.8);
+        }
+
+        #submitButton:active {
+            transform: scale(0.95);
+        }
+
+        /* Style for the displayed image */
         #displayedImage {
-            display: none; /* This line is mandatory */
+            display: none;
+            margin-top: 20px;
+            width: 300px;
+            height: auto;
+            border-radius: 15px;
+            transition: opacity 0.5s ease-in-out, transform 0.3s ease-in-out;
         }
+
+        /* Fun animation when image appears */
+        #displayedImage.show {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        p {
+            color: #a03142;
+            font-size: 20px;
+        }
+
     </style>
 </head>
 <body>
 
+    <p>Type a letter.</p>
     
     <!-- INPUT FIELD FOR 1 CHARACTER -->
     <input type="text" id="charInput" maxlength="1">
@@ -34,57 +95,47 @@
     <!-- IMAGE TO DISPLAY -->
     <img id="displayedImage" src="" alt="Displayed Image">
 
-
-    <!-- Image Display Script Below -->
     <script>
-        // Array of images
-        // DIRECTIONS: UPDATE THE URLS WITH THE RELATIVE LINKS OF YOUR IMAGES
-        const images = [
-            "https://via.placeholder.com/300/00FF00/FFFFFF?text=A", //A
-            "https://via.placeholder.com/300/00FF00/FFFFFF?text=B", //B
-            "https://via.placeholder.com/300/0000FF/FFFFFF?text=C", //C
-            "https://via.placeholder.com/300/FFFF00/000000?text=D", //D
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=E", //E
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=F", //F
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=G", //G
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=H", //H
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=I", //I
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=J", //J
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=K", //K
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=L", //L
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=M", //M
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=N", //N
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=O", //O
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=P", //P
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=Q", //Q
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=R", //R
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=S", //S
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=T", //T
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=U", //U
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=V", //V
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=W", //W
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=X", //X
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=Y", //Y
-            "https://via.placeholder.com/300/FF00FF/FFFFFF?text=Z"  //Z
-        ];
+        // Array of actual images for each letter
+        const images = {
+            "A": "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExcTAwNnEyeTM0ZmtycTgzaWV5ZngzaHYzdnMzeGg2Z2h2MGttNDNibCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/mlvseq9yvZhba/giphy.gif",
+            "B": "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTh2MXdxc3p3ajVic2s3MXI0b21oNWdodTlveWlhamRpYzllMzlmNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3oriO0OEd9QIDdllqo/giphy.gif",
+            "C": "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExMHdjODdjZGlsbXVxczkxaDB1bWR5dXd1aXUwZ2djM2IwbGpkeXBpcSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JIX9t2j0ZTN9S/giphy.gif",
+            "D": "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMGRwdGM4a3RqaHZjZXRibGtha3kwNG5pbmpqeWk5N3pnY3FjeTIwbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/BBNYBoYa5VwtO/giphy.gif",
+            "E": "https://media.giphy.com/media/zZMTVkTeEfeEg/giphy.gif?cid=790b761161ikywq5g7oqy7n7iuls8x48cscabt81q992rrsh&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+            "F": "https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif?cid=790b761161ikywq5g7oqy7n7iuls8x48cscabt81q992rrsh&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+            "G": "https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExaDNsZGJnb3Zra2V1b3BidTA0YWozbngycjJqdWU3aGxuNHYxZ3d0bSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/wzemmyE7LRCPhFbC9W/giphy.gif",
+            "H": "https://media.giphy.com/media/3o85xoi6nNqJQJ95Qc/giphy.gif?cid=790b761161ikywq5g7oqy7n7iuls8x48cscabt81q992rrsh&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+            "I": "https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExdmNtZjlsNWcwMzQwcDJsaHAxdDkzOXc0ajh1enNwbDBncmFhYjR6MCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l4KibK3JwaVo0CjDO/giphy.gif",
+            "J": "https://media.giphy.com/media/GeimqsH0TLDt4tScGw/giphy.gif?cid=790b761161ikywq5g7oqy7n7iuls8x48cscabt81q992rrsh&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+            "K": "https://media.giphy.com/media/5i7umUqAOYYEw/giphy.gif?cid=790b761161ikywq5g7oqy7n7iuls8x48cscabt81q992rrsh&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+            "L": "https://media.giphy.com/media/Lq0h93752f6J9tijrh/giphy.gif?cid=790b761161ikywq5g7oqy7n7iuls8x48cscabt81q992rrsh&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+            "M": "https://media.giphy.com/media/VbnUQpnihPSIgIXuZv/giphy.gif?cid=790b761161ikywq5g7oqy7n7iuls8x48cscabt81q992rrsh&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+            "N": "https://media.giphy.com/media/E0cyxhawhe9dm/giphy.gif?cid=790b761161ikywq5g7oqy7n7iuls8x48cscabt81q992rrsh&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+            "O": "https://media.giphy.com/media/13CoXDiaCcCoyk/giphy.gif?cid=790b761161ikywq5g7oqy7n7iuls8x48cscabt81q992rrsh&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+            "P": "https://media.giphy.com/media/nR4L10XlJcSeQ/giphy.gif?cid=790b761161ikywq5g7oqy7n7iuls8x48cscabt81q992rrsh&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+            "Q": "https://media.giphy.com/media/yFQ0ywscgobJK/giphy.gif?cid=790b761161ikywq5g7oqy7n7iuls8x48cscabt81q992rrsh&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+            "R": "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExb2h4NzA5YjZnYnlyd29jNWg0dHoyeGxudGY0ZDkwMXVuc2NyMWdneCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/CjmvTCZf2U3p09Cn0h/giphy.gif",
+            "S": "https://media.giphy.com/media/q1MeAPDDMb43K/giphy.gif?cid=790b761161ikywq5g7oqy7n7iuls8x48cscabt81q992rrsh&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+            "T": "https://media.giphy.com/media/CHc9dLQVQOAXm/giphy.gif?cid=ecf05e47p0duehb5c8vblnsgmk06syfks4w8s67qa8b1kbp4&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+            "U": "https://media.giphy.com/media/SVYrs1hU0SiAf1nw1n/giphy.gif?cid=ecf05e47p0duehb5c8vblnsgmk06syfks4w8s67qa8b1kbp4&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+            "V": "https://media.giphy.com/media/Md4xQfuJeTtx6/giphy.gif?cid=ecf05e47p0duehb5c8vblnsgmk06syfks4w8s67qa8b1kbp4&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+            "W": "https://media.giphy.com/media/7YCA4XbA0ArQuWEfqJ/giphy.gif?cid=ecf05e47p0duehb5c8vblnsgmk06syfks4w8s67qa8b1kbp4&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+            "X": "https://media.giphy.com/media/122ieBYC3AcECI/giphy.gif?cid=ecf05e47p0duehb5c8vblnsgmk06syfks4w8s67qa8b1kbp4&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+            "Y": "https://media.giphy.com/media/VxbvpfaTTo3le/giphy.gif?cid=ecf05e4733jkugepm79dfbw3uwa7cqo4lasa7ztua6nioois&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+            "Z": "https://media.giphy.com/media/xJjs8eGVbjNYY/giphy.gif?cid=ecf05e47p0duehb5c8vblnsgmk06syfks4w8s67qa8b1kbp4&ep=v1_gifs_search&rid=giphy.gif&ct=g"
+        };
 
         function displayImage() {
             const input = document.getElementById("charInput").value.toUpperCase();
             const imgElement = document.getElementById("displayedImage");
-            
-            // Assign an image based on character (A-Z)
-            const index = input.charCodeAt(0) - 65; // 'A' is 65 in ASCII
-            if (index >= 0 && index < images.length) {
-                imgElement.src = images[index];
+
+            if (images[input]) {
+                imgElement.src = images[input];
                 imgElement.style.display = "block";
             } else {
-                /* 
-                alert("Please enter a letter between A and Z.");
-                imgElement.style.display = "none";
-                */
-
-                // IF INVALID INPUT IS ENTERED, DISPLAY ALTERNATE IMAGE
-                imgElement.src = "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmtkdnJhMXY4Njd1cXR3MTM3MW1nMzZ1NXNhNHlhOHA0MWF2dDUzdyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/13dRJkj5wgKq9q/giphy.gif"
+                // If invalid input, show a fun default image
+                imgElement.src = "https://via.placeholder.com/300/000000/FFFFFF?text=Try+Again!";
                 imgElement.style.display = "block";
             }
         }
